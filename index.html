@@ -1627,7 +1627,35 @@
             if (e.target.classList.contains('modal')) {
                 e.target.classList.add('hidden');
             }
+    
+    <!-- Debug Panel (only visible in development) -->
+    <div id="debug-panel" class="fixed bottom-4 left-4 bg-gray-900 border border-gray-700 rounded-lg p-4 text-white text-sm z-50" style="display: none;">
+      <div class="flex justify-between items-center mb-2">
+        <h4 class="font-bold">Debug Panel</h4>
+        <button onclick="document.getElementById('debug-panel').style.display='none'" class="text-gray-400 hover:text-white">×</button>
+      </div>
+      <div class="space-y-2">
+        <button onclick="checkAuthStatus()" class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-xs">Check Auth Status</button>
+        <button onclick="console.log('Supabase URL:', import.meta.env.VITE_SUPABASE_URL)" class="bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-xs">Check Supabase</button>
+        <button onclick="showLogin()" class="bg-purple-600 hover:bg-purple-700 px-3 py-1 rounded text-xs">Test Login Modal</button>
+      </div>
+    </div>
+    
+    <!-- Debug Toggle (only in development) -->
+    <script>
+      // Show debug panel in development
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        const debugToggle = document.createElement('button');
+        debugToggle.innerHTML = '🐛';
+        debugToggle.className = 'fixed bottom-4 left-4 bg-gray-800 text-white p-2 rounded-full text-xs z-40 hover:bg-gray-700';
+        debugToggle.onclick = () => {
+          const panel = document.getElementById('debug-panel');
+          panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        };
+        document.body.appendChild(debugToggle);
+      }
+    </script>
         });
   <script type="module" src="/src/main.js"></script>
 </body>
-</html> <script type="module" src="/src/main.js"></script>
+</html>
