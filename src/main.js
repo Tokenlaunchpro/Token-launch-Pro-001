@@ -244,14 +244,14 @@ window.startPlatformSetup = startPlatformSetup;
 window.showLogin = showLogin;
 window.closeAuthModal = closeAuthModal;
 window.toggleAuthMode = toggleAuthMode;
+window.handleLogin = handleLogin;
+window.handleSignup = handleSignup;
 window.showProductionChecklist = () => productionChecklist.showChecklist();
 window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
 window.showLaunchToken = startPlatformSetup;
 
-(async () => {
-  // Initialize the application
-  await main();
-})();
+// Initialize the application using top-level await
+await main();
 
 // Add form event listeners after DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
