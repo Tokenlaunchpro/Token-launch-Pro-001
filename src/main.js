@@ -421,7 +421,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   try {
     // Initialize the application
-    await main();
+    main()
+  .then(() => console.log('✅ TokenLaunchPro initialized!'))
+  .catch(console.error);
     console.log('✅ Application initialized successfully');
   } catch (error) {
     console.error('❌ Application initialization failed:', error);
