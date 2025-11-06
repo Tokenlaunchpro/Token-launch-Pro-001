@@ -53,65 +53,12 @@ export class PlatformSetup {
         throw new Error(`Database connection failed: ${error.message}`);
       }
       
-      // Create necessary tables if they don't exist
-      await this.createDatabaseTables();
-      
       console.log('✅ Database connection established');
       return { success: true };
       
     } catch (error) {
       console.error('❌ Database setup failed:', error);
       throw error;
-    }
-  }
-
-  // Create database tables
-  async createDatabaseTables() {
-    const tables = [
-      {
-        name: 'users',
-        sql: `
-          CREATE TABLE IF NOT EXISTS users (
-            id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-            email text UNIQUE NOT NULL,
-            full_name text NOT NULL,
-            company text,
-            subscription_plan text DEFAULT 'free' CHECK (subscription_plan IN ('free', 'starter', 'professional', 'enterprise')),
-            avatar_url text,
-            phone text,
-            created_at timestamptz DEFAULT now(),
-            updated_at timestamptz DEFAULT now()
-          );
-          
-          ALTER TABLE users ENABLE ROW LEVEL SECURITY;
-          
-          CREATE POLICY "Users can read own data" ON users
-            FOR SELECT TO authenticated
-            USING (auth.uid() = id);
-            
-          CREATE POLICY "Users can update own data" ON users
-            FOR UPDATE TO authenticated
-            USING (auth.uid() = id)
-            WITH CHECK (auth.uid() = id);
-            
-          CREATE POLICY "Users can insert own data" ON users
-            FOR INSERT TO authenticated
-            WITH CHECK (auth.uid() = id);
-        `
-      }
-    ];
-
-    for (const table of tables) {
-      try {
-        const { error } = await supabase.rpc('exec_sql', { sql: table.sql });
-        if (error) {
-          console.warn(`Table ${table.name} might already exist:`, error.message);
-        } else {
-          console.log(`✅ Table ${table.name} created successfully`);
-        }
-      } catch (error) {
-        console.warn(`Table ${table.name} setup warning:`, error.message);
-      }
     }
   }
 

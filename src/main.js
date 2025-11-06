@@ -422,7 +422,9 @@ window.showLaunchToken = startPlatformSetup;
 window.checkAuthStatus = checkAuthStatus;
 
 // Initialize the application using top-level await
-await main();
+(async () => {
+  await main();
+})();
 
 // Add form event listeners after DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
