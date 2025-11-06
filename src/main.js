@@ -34,6 +34,8 @@ async function main() {
     
   } catch (error) {
     console.error('Failed to initialize auth:', error);
+    // Re-throw error so it can be handled by the caller
+    throw error;
   }
   
   // Add setup platform button listener
@@ -414,17 +416,19 @@ window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
 window.checkAuthStatus = checkAuthStatus;
 
 // Initialize the application and add event listeners
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 DOM loaded, initializing application...');
   
-  // Initialize the application
-  main()
-    .then(() => {
+  // Use async IIFE to handle await properly
+  (async () => {
+    try {
+      // Initialize the application
+      await main();
       console.log('✅ Application initialized successfully');
-    })
-    .catch((error) => {
+    } catch (error) {
       console.error('❌ Application initialization failed:', error);
-    });
+    }
+  })();
   
   // Add form event listeners
   const loginForm = document.getElementById('loginForm');
