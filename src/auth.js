@@ -5,9 +5,6 @@ export class Auth {
     this.currentUser = null;
     this.isAuthenticated = false;
     this.listeners = [];
-    
-    // Initialize auth state
-    this.init();
   }
 
   async init() {
@@ -248,6 +245,12 @@ export class Auth {
   }
 }
 
-// Create and export auth instance
+// Create and export auth instance with proper async initialization
 export const auth = new Auth();
+
+// Initialize auth asynchronously
+(async () => {
+  await auth.init();
+})();
+
 export default auth;
