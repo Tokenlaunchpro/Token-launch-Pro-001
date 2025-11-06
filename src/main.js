@@ -248,20 +248,18 @@ window.showProductionChecklist = () => productionChecklist.showChecklist();
 window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
 
 // Initialize the application
-(async () => {
-  await main();
+await main();
+
+// Add form event listeners after DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
   
-  // Add form event listeners after DOM is loaded
-  document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('loginForm');
-    const signupForm = document.getElementById('signupForm');
-    
-    if (loginForm) {
-      loginForm.addEventListener('submit', handleLogin);
-    }
-    
-    if (signupForm) {
-      signupForm.addEventListener('submit', handleSignup);
-    }
-  });
-})();
+  if (loginForm) {
+    loginForm.addEventListener('submit', handleLogin);
+  }
+  
+  if (signupForm) {
+    signupForm.addEventListener('submit', handleSignup);
+  }
+});
