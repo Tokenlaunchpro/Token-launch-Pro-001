@@ -248,9 +248,4 @@ export class Auth {
 // Create and export auth instance with proper async initialization
 export const auth = new Auth();
 
-// Initialize auth asynchronously
-(async () => {
-  await auth.init();
-})();
-
 export default auth;
