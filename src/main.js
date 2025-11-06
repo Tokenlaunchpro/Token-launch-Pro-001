@@ -70,9 +70,76 @@ async function main() {
 
 // Define showLogin function globally
 function showLogin() {
-  console.log('Get Started clicked - Login/Signup modal would open here');
-  // TODO: Implement actual login/signup modal
-  alert('Welcome to TokenLaunchPro! Login/Signup functionality coming soon.');
+  const modal = document.getElementById('authModal');
+  if (modal) {
+    modal.classList.remove('hidden');
+  }
+}
+
+// Close auth modal
+function closeAuthModal() {
+  const modal = document.getElementById('authModal');
+  if (modal) {
+    modal.classList.add('hidden');
+  }
+}
+
+// Toggle between login and signup
+function toggleAuthMode() {
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+  const authTitle = document.getElementById('authTitle');
+  const toggleButton = document.getElementById('toggleAuth');
+  
+  if (loginForm.classList.contains('hidden')) {
+    // Switch to login
+    loginForm.classList.remove('hidden');
+    signupForm.classList.add('hidden');
+    authTitle.textContent = 'Welcome Back';
+    toggleButton.textContent = "Don't have an account? Sign up";
+  } else {
+    // Switch to signup
+    loginForm.classList.add('hidden');
+    signupForm.classList.remove('hidden');
+    authTitle.textContent = 'Create Account';
+    toggleButton.textContent = 'Already have an account? Sign in';
+  }
+}
+
+// Handle login form submission
+async function handleLogin(event) {
+  event.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  
+  try {
+    const result = await auth.signIn(email, password);
+    if (result.success) {
+      closeAuthModal();
+      alert('Welcome back! You are now signed in.');
+    }
+  } catch (error) {
+    alert('Login failed: ' + error.message);
+  }
+}
+
+// Handle signup form submission
+async function handleSignup(event) {
+  event.preventDefault();
+  const name = document.getElementById('signupName').value;
+  const email = document.getElementById('signupEmail').value;
+  const company = document.getElementById('signupCompany').value;
+  const password = document.getElementById('signupPassword').value;
+  
+  try {
+    const result = await auth.signUp(email, password, name, company);
+    if (result.success) {
+      closeAuthModal();
+      alert('Account created successfully! Welcome to TokenLaunchPro!');
+    }
+  } catch (error) {
+    alert('Signup failed: ' + error.message);
+  }
 }
 
 // Start platform setup process
@@ -175,10 +242,26 @@ function showSetupProgress() {
 // Make functions globally available
 window.startPlatformSetup = startPlatformSetup;
 window.showLogin = showLogin;
+window.closeAuthModal = closeAuthModal;
+window.toggleAuthMode = toggleAuthMode;
 window.showProductionChecklist = () => productionChecklist.showChecklist();
 window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
 
 // Initialize the application
 (async () => {
   await main();
+  
+  // Add form event listeners after DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    
+    if (loginForm) {
+      loginForm.addEventListener('submit', handleLogin);
+    }
+    
+    if (signupForm) {
+      signupForm.addEventListener('submit', handleSignup);
+    }
+  });
 })();
