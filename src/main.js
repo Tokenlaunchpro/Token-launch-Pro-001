@@ -1,3 +1,4 @@
+import { auth } from './auth.js';
 import { platformSetup } from './platform-setup.js';
 import { marketingContent } from './marketing-content.js';
 import { productionChecklist } from './production-checklist.js';
