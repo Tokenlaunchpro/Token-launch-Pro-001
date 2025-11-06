@@ -17,16 +17,18 @@ export class Auth {
       }
       
       // Listen for auth changes
-      supabase.auth.onAuthStateChange(async (event, session) => {
-        if (session) {
-          this.currentUser = session.user;
-          this.isAuthenticated = true;
-          await this.ensureProfile(session.user);
-        } else {
-          this.currentUser = null;
-          this.isAuthenticated = false;
-        }
-        this.notifyListeners();
+      supabase.auth.onAuthStateChange((event, session) => {
+        (async () => {
+          if (session) {
+            this.currentUser = session.user;
+            this.isAuthenticated = true;
+            await this.ensureProfile(session.user);
+          } else {
+            this.currentUser = null;
+            this.isAuthenticated = false;
+          }
+          this.notifyListeners();
+        })();
       });
       
       this.notifyListeners();
