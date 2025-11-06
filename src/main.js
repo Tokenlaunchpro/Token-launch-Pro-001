@@ -88,12 +88,10 @@ async function main() {
   }
 }
 
-// ✅ FIXED: Wrap in IIAFE to resolve await syntax error
-(async () => {
-  try {
-    await main();
-    console.log('✅ TokenLaunchPro initialized successfully!');
-  } catch (error) {
-    console.error('TokenLaunchPro initialization failed:', error);
-  }
-})();
+// Use top-level await in ES module
+try {
+  await main();
+  console.log('✅ TokenLaunchPro initialized successfully!');
+} catch (error) {
+  console.error('TokenLaunchPro initialization failed:', error);
+}
