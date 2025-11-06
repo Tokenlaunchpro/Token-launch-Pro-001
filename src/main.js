@@ -109,6 +109,14 @@ function toggleAuthMode() {
 // Handle login form submission
 async function handleLogin(event) {
   event.preventDefault();
+  
+  const submitButton = event.target.querySelector('button[type="submit"]');
+  const originalText = submitButton.textContent;
+  
+  // Show loading state
+  submitButton.textContent = 'Signing in...';
+  submitButton.disabled = true;
+  
   const email = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
   
@@ -116,30 +124,129 @@ async function handleLogin(event) {
     const result = await auth.signIn(email, password);
     if (result.success) {
       closeAuthModal();
-      alert('Welcome back! You are now signed in.');
+      showSuccessMessage('Welcome back! You are now signed in.');
+      // Refresh the page to show authenticated state
+      setTimeout(() => window.location.reload(), 1000);
     }
   } catch (error) {
-    alert('Login failed: ' + error.message);
+    showErrorMessage('Login failed: ' + error.message);
+  } finally {
+    // Reset button state
+    submitButton.textContent = originalText;
+    submitButton.disabled = false;
   }
 }
 
 // Handle signup form submission
 async function handleSignup(event) {
   event.preventDefault();
+  
+  const submitButton = event.target.querySelector('button[type="submit"]');
+  const originalText = submitButton.textContent;
+  
+  // Show loading state
+  submitButton.textContent = 'Creating account...';
+  submitButton.disabled = true;
+  
   const name = document.getElementById('signupName').value;
   const email = document.getElementById('signupEmail').value;
   const company = document.getElementById('signupCompany').value;
   const password = document.getElementById('signupPassword').value;
   
+  // Basic validation
+  if (!name || !email || !password) {
+    showErrorMessage('Please fill in all required fields');
+    submitButton.textContent = originalText;
+    submitButton.disabled = false;
+    return;
+  }
+  
+  if (password.length < 6) {
+    showErrorMessage('Password must be at least 6 characters long');
+    submitButton.textContent = originalText;
+    submitButton.disabled = false;
+    return;
+  }
+  
   try {
     const result = await auth.signUp(email, password, name, company);
     if (result.success) {
       closeAuthModal();
-      alert('Account created successfully! Welcome to TokenLaunchPro!');
+      showSuccessMessage('Account created successfully! Welcome to TokenLaunchPro!');
+      // Refresh the page to show authenticated state
+      setTimeout(() => window.location.reload(), 1000);
     }
   } catch (error) {
-    alert('Signup failed: ' + error.message);
+    showErrorMessage('Signup failed: ' + error.message);
+  } finally {
+    // Reset button state
+    submitButton.textContent = originalText;
+    submitButton.disabled = false;
   }
+}
+
+// Show success message
+function showSuccessMessage(message) {
+  const notification = document.createElement('div');
+  notification.className = 'fixed top-4 right-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white p-4 rounded-xl shadow-2xl z-50 max-w-md';
+  notification.innerHTML = `
+    <div class="flex items-start">
+      <div class="flex-shrink-0">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm font-medium">${message}</p>
+      </div>
+      <button onclick="this.closest('.fixed').remove()" class="ml-4 text-white/70 hover:text-white">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Auto-remove after 5 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.remove();
+    }
+  }, 5000);
+}
+
+// Show error message
+function showErrorMessage(message) {
+  const notification = document.createElement('div');
+  notification.className = 'fixed top-4 right-4 bg-gradient-to-r from-red-600 to-red-700 text-white p-4 rounded-xl shadow-2xl z-50 max-w-md';
+  notification.innerHTML = `
+    <div class="flex items-start">
+      <div class="flex-shrink-0">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm font-medium">${message}</p>
+      </div>
+      <button onclick="this.closest('.fixed').remove()" class="ml-4 text-white/70 hover:text-white">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Auto-remove after 5 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.remove();
+    }
+  }, 5000);
 }
 
 // Start platform setup process
