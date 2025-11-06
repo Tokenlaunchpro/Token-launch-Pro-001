@@ -179,4 +179,6 @@ window.showProductionChecklist = () => productionChecklist.showChecklist();
 window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
 
 // Initialize the application
-main();
+(async () => {
+  await main();
+})();
