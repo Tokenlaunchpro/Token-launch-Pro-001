@@ -122,7 +122,7 @@ export class Auth {
   async createProfile(user, fullName, company) {
     try {
       const { error } = await supabase
-        .from('user_profiles')
+        .from('users')
         .insert({
           id: user.id,
           email: user.email,
@@ -143,7 +143,7 @@ export class Auth {
   async ensureProfile(user) {
     try {
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('users')
         .select('*')
         .eq('id', user.id)
         .single();
@@ -163,7 +163,7 @@ export class Auth {
 
     try {
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('users')
         .select('*')
         .eq('id', this.currentUser.id)
         .single();
@@ -182,7 +182,7 @@ export class Auth {
 
     try {
       const { error } = await supabase
-        .from('user_profiles')
+        .from('users')
         .update(updates)
         .eq('id', this.currentUser.id);
 

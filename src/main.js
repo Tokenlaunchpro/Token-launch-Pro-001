@@ -57,6 +57,7 @@ async function main() {
   document.addEventListener('DOMContentLoaded', () => {
     const navButton = document.getElementById('navGetStartedButton');
     const heroButton = document.getElementById('heroGetStartedButton');
+    const launchTokenButton = document.getElementById('launchTokenAction');
     
     if (navButton) {
       navButton.addEventListener('click', showLogin);
@@ -64,6 +65,10 @@ async function main() {
     
     if (heroButton) {
       heroButton.addEventListener('click', showLogin);
+    }
+    
+    if (launchTokenButton) {
+      launchTokenButton.addEventListener('click', startPlatformSetup);
     }
   });
 }
@@ -418,7 +423,6 @@ window.handleLogin = handleLogin;
 window.handleSignup = handleSignup;
 window.showProductionChecklist = () => productionChecklist.showChecklist();
 window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
-window.showLaunchToken = startPlatformSetup;
 window.checkAuthStatus = checkAuthStatus;
 
 // Initialize the application using top-level await
