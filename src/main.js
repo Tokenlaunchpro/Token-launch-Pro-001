@@ -414,18 +414,16 @@ window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
 window.checkAuthStatus = checkAuthStatus;
 
 // Initialize the application and add event listeners
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   console.log('🚀 DOM loaded, initializing application...');
   
   // Initialize the application
-  (async () => {
-    try {
-      await main();
-      console.log('✅ Application initialized successfully');
-    } catch (error) {
-      console.error('❌ Application initialization failed:', error);
-    }
-  })();
+  try {
+    await main();
+    console.log('✅ Application initialized successfully');
+  } catch (error) {
+    console.error('❌ Application initialization failed:', error);
+  }
   
   // Add form event listeners
   const loginForm = document.getElementById('loginForm');
