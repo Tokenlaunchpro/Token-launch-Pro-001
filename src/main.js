@@ -246,6 +246,7 @@ window.closeAuthModal = closeAuthModal;
 window.toggleAuthMode = toggleAuthMode;
 window.showProductionChecklist = () => productionChecklist.showChecklist();
 window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
+window.showLaunchToken = startPlatformSetup;
 
 // Initialize the application
 await main();
