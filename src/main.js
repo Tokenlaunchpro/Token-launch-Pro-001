@@ -248,8 +248,10 @@ window.showProductionChecklist = () => productionChecklist.showChecklist();
 window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
 window.showLaunchToken = startPlatformSetup;
 
-// Initialize the application
-await main();
+(async () => {
+  // Initialize the application
+  await main();
+})();
 
 // Add form event listeners after DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
