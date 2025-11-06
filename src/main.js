@@ -109,6 +109,7 @@ function toggleAuthMode() {
 // Handle login form submission
 async function handleLogin(event) {
   event.preventDefault();
+  console.log('🔐 Attempting login...');
   
   const submitButton = event.target.querySelector('button[type="submit"]');
   const originalText = submitButton.textContent;
@@ -123,12 +124,14 @@ async function handleLogin(event) {
   try {
     const result = await auth.signIn(email, password);
     if (result.success) {
+      console.log('✅ Login successful');
       closeAuthModal();
       showSuccessMessage('Welcome back! You are now signed in.');
       // Refresh the page to show authenticated state
       setTimeout(() => window.location.reload(), 1000);
     }
   } catch (error) {
+    console.error('❌ Login failed:', error);
     showErrorMessage('Login failed: ' + error.message);
   } finally {
     // Reset button state
@@ -140,6 +143,7 @@ async function handleLogin(event) {
 // Handle signup form submission
 async function handleSignup(event) {
   event.preventDefault();
+  console.log('📝 Attempting signup...');
   
   const submitButton = event.target.querySelector('button[type="submit"]');
   const originalText = submitButton.textContent;
@@ -171,12 +175,14 @@ async function handleSignup(event) {
   try {
     const result = await auth.signUp(email, password, name, company);
     if (result.success) {
+      console.log('✅ Signup successful');
       closeAuthModal();
       showSuccessMessage('Account created successfully! Welcome to TokenLaunchPro!');
       // Refresh the page to show authenticated state
       setTimeout(() => window.location.reload(), 1000);
     }
   } catch (error) {
+    console.error('❌ Signup failed:', error);
     showErrorMessage('Signup failed: ' + error.message);
   } finally {
     // Reset button state
@@ -215,6 +221,9 @@ function showSuccessMessage(message) {
       notification.remove();
     }
   }, 5000);
+  
+  // Log success for debugging
+  console.log('✅ SUCCESS:', message);
 }
 
 // Show error message
@@ -247,6 +256,60 @@ function showErrorMessage(message) {
       notification.remove();
     }
   }, 5000);
+  
+  // Log error for debugging
+  console.error('❌ ERROR:', message);
+}
+
+// Add authentication status checker
+function checkAuthStatus() {
+  console.log('🔍 Checking authentication status...');
+  console.log('Current user:', auth.getCurrentUser());
+  console.log('Is authenticated:', auth.isUserAuthenticated());
+  
+  if (auth.isUserAuthenticated()) {
+    console.log('✅ User is logged in');
+    showAuthenticatedState();
+  } else {
+    console.log('❌ User is not logged in');
+    showUnauthenticatedState();
+  }
+}
+
+// Show authenticated state
+function showAuthenticatedState() {
+  const navButton = document.getElementById('navGetStartedButton');
+  const heroButton = document.getElementById('heroGetStartedButton');
+  
+  if (navButton) {
+    navButton.textContent = 'Dashboard';
+    navButton.onclick = () => showSuccessMessage('Dashboard feature coming soon!');
+  }
+  
+  if (heroButton) {
+    heroButton.textContent = 'Go to Dashboard';
+    heroButton.onclick = () => showSuccessMessage('Dashboard feature coming soon!');
+  }
+  
+  console.log('✅ Updated UI for authenticated user');
+}
+
+// Show unauthenticated state
+function showUnauthenticatedState() {
+  const navButton = document.getElementById('navGetStartedButton');
+  const heroButton = document.getElementById('heroGetStartedButton');
+  
+  if (navButton) {
+    navButton.textContent = 'Get Started';
+    navButton.onclick = showLogin;
+  }
+  
+  if (heroButton) {
+    heroButton.textContent = 'Launch Your Token';
+    heroButton.onclick = showLogin;
+  }
+  
+  console.log('✅ Updated UI for unauthenticated user');
 }
 
 // Start platform setup process
@@ -356,6 +419,7 @@ window.handleSignup = handleSignup;
 window.showProductionChecklist = () => productionChecklist.showChecklist();
 window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
 window.showLaunchToken = startPlatformSetup;
+window.checkAuthStatus = checkAuthStatus;
 
 // Initialize the application using top-level await
 await main();
