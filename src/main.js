@@ -1,26 +1,28 @@
 import { auth } from './auth.js';
 
-try {
-  await auth.init();
-  console.log('Auth initialized successfully');
-  
-  // Add event listeners for Get Started buttons
-  document.addEventListener('DOMContentLoaded', () => {
-    const navButton = document.getElementById('navGetStartedButton');
-    const heroButton = document.getElementById('heroGetStartedButton');
+(async () => {
+  try {
+    await auth.init();
+    console.log('Auth initialized successfully');
     
-    if (navButton) {
-      navButton.addEventListener('click', showLogin);
-    }
+    // Add event listeners for Get Started buttons
+    document.addEventListener('DOMContentLoaded', () => {
+      const navButton = document.getElementById('navGetStartedButton');
+      const heroButton = document.getElementById('heroGetStartedButton');
+      
+      if (navButton) {
+        navButton.addEventListener('click', showLogin);
+      }
+      
+      if (heroButton) {
+        heroButton.addEventListener('click', showLogin);
+      }
+    });
     
-    if (heroButton) {
-      heroButton.addEventListener('click', showLogin);
-    }
-  });
-  
-} catch (error) {
-  console.error('Failed to initialize auth:', error);
-}
+  } catch (error) {
+    console.error('Failed to initialize auth:', error);
+  }
+})();
 
 // Define showLogin function globally
 function showLogin() {
