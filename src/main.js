@@ -418,12 +418,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   console.log('🚀 DOM loaded, initializing application...');
   
   // Initialize the application
-  try {
-    await main();
-    console.log('✅ Application initialized successfully');
-  } catch (error) {
-    console.error('❌ Application initialization failed:', error);
-  }
+  main()
+    .then(() => {
+      console.log('✅ Application initialized successfully');
+    })
+    .catch((error) => {
+      console.error('❌ Application initialization failed:', error);
+    });
   
   // Add form event listeners
   const loginForm = document.getElementById('loginForm');
