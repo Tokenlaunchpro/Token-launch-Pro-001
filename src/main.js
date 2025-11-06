@@ -1,5 +1,7 @@
 import { platformSetup } from './platform-setup.js';
 import { marketingContent } from './marketing-content.js';
+import { productionChecklist } from './production-checklist.js';
+import { postDeploymentRoadmap } from './post-deployment-roadmap.js';
 
 // Main initialization function
 async function main() {
@@ -37,6 +39,18 @@ async function main() {
   const setupButton = document.getElementById('setupPlatformButton');
   if (setupButton) {
     setupButton.addEventListener('click', startPlatformSetup);
+  }
+  
+  // Add production checklist button
+  const productionButton = document.getElementById('productionChecklistButton');
+  if (productionButton) {
+    productionButton.addEventListener('click', () => productionChecklist.showChecklist());
+  }
+  
+  // Add roadmap button
+  const roadmapButton = document.getElementById('roadmapButton');
+  if (roadmapButton) {
+    roadmapButton.addEventListener('click', () => postDeploymentRoadmap.showRoadmap());
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -160,6 +174,8 @@ function showSetupProgress() {
 // Make functions globally available
 window.startPlatformSetup = startPlatformSetup;
 window.showLogin = showLogin;
+window.showProductionChecklist = () => productionChecklist.showChecklist();
+window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
 
 // Initialize the application
 main();
