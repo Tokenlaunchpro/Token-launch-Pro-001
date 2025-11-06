@@ -80,7 +80,7 @@ export class WalletIntegration {
         // Request account access
         await window.ethereum.request({ method: 'eth_requestAccounts' });
         
-        this.provider = new ethers.providers.Web3Provider(window.ethereum);
+        this.provider = new ethers.BrowserProvider(window.ethereum);
         this.signer = this.provider.getSigner();
         
         const address = await this.signer.getAddress();
@@ -152,10 +152,10 @@ export class WalletIntegration {
   async getWalletBalance(address, network = 'ethereum') {
     try {
       const networkConfig = this.supportedNetworks[network];
-      const provider = new ethers.providers.JsonRpcProvider(networkConfig.rpcUrl);
+      const provider = new ethers.JsonRpcProvider(networkConfig.rpcUrl);
       
       const balance = await provider.getBalance(address);
-      const formattedBalance = ethers.utils.formatEther(balance);
+      const formattedBalance = ethers.formatEther(balance);
       
       return {
         balance: formattedBalance,

@@ -88,10 +88,9 @@ async function main() {
   }
 }
 
-// Use top-level await in ES module
-try {
-  await main();
+// Initialize without top-level await
+main().then(() => {
   console.log('✅ TokenLaunchPro initialized successfully!');
-} catch (error) {
+}).catch(error => {
   console.error('TokenLaunchPro initialization failed:', error);
-}
+});
