@@ -88,9 +88,12 @@ async function main() {
   }
 }
 
-// Initialize without top-level await
-main().then(() => {
-  console.log('✅ TokenLaunchPro initialized successfully!');
-}).catch(error => {
-  console.error('TokenLaunchPro initialization failed:', error);
-});
+// ✅ FIXED: Wrap in IIAFE to resolve await syntax error
+(async () => {
+  try {
+    await main();
+    console.log('✅ TokenLaunchPro initialized successfully!');
+  } catch (error) {
+    console.error('TokenLaunchPro initialization failed:', error);
+  }
+})();
