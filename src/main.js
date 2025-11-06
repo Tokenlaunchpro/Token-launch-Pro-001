@@ -53,39 +53,27 @@ async function main() {
   if (roadmapButton) {
     roadmapButton.addEventListener('click', () => postDeploymentRoadmap.showRoadmap());
   }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const navButton = document.getElementById('navGetStartedButton');
-    const heroButton = document.getElementById('heroGetStartedButton');
-    const launchTokenButton = document.getElementById('launchTokenAction');
-    
-    if (navButton) {
-      navButton.addEventListener('click', showLogin);
-    }
-    
-    if (heroButton) {
-      heroButton.addEventListener('click', showLogin);
-    }
-    
-    if (launchTokenButton) {
-      launchTokenButton.addEventListener('click', startPlatformSetup);
-    }
-  });
 }
 
 // Define showLogin function globally
 function showLogin() {
+  console.log('🔐 Opening login modal...');
   const modal = document.getElementById('authModal');
   if (modal) {
     modal.classList.remove('hidden');
+    console.log('✅ Modal opened successfully');
+  } else {
+    console.error('❌ Auth modal not found');
   }
 }
 
 // Close auth modal
 function closeAuthModal() {
+  console.log('🔒 Closing login modal...');
   const modal = document.getElementById('authModal');
   if (modal) {
     modal.classList.add('hidden');
+    console.log('✅ Modal closed successfully');
   }
 }
 
@@ -425,21 +413,29 @@ window.showProductionChecklist = () => productionChecklist.showChecklist();
 window.showRoadmap = () => postDeploymentRoadmap.showRoadmap();
 window.checkAuthStatus = checkAuthStatus;
 
-// Initialize the application using top-level await
-(async () => {
-  await main();
-})();
-
-// Add form event listeners after DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize the application and add event listeners
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log('🚀 DOM loaded, initializing application...');
+  
+  // Initialize the application
+  try {
+    await main();
+    console.log('✅ Application initialized successfully');
+  } catch (error) {
+    console.error('❌ Application initialization failed:', error);
+  }
+  
+  // Add form event listeners
   const loginForm = document.getElementById('loginForm');
   const signupForm = document.getElementById('signupForm');
   
   if (loginForm) {
     loginForm.addEventListener('submit', handleLogin);
+    console.log('✅ Login form listener added');
   }
   
   if (signupForm) {
     signupForm.addEventListener('submit', handleSignup);
+    console.log('✅ Signup form listener added');
   }
 });
